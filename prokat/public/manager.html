@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПРОКАТ — Менеджер: Управление арендой</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .analytics-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .analytic-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        .analytic-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .analytic-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .alert-banner {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            color: #b45309;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo">⚡ПРОКАТ<span>.</span></div>
+            </div>
+            <div class="nav-group-title">Рабочее пространство</div>
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#">📋 Аренды</a>
+                </li>
+                <li class="nav-item">
+                    <a href="client.html" target="_blank">👤 Окно клиента</a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html">⚙️ Админ-панель</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Пункт: <strong>Парк Горького</strong></p>
+                <p>Смена: 09:00–22:00</p>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="header-panel">
+                <div class="page-breadcrumbs">Управление арендой / Текущая смена</div>
+                <div class="user-profile-zone">
+                    <div class="role-badge">Менеджер 💼</div>
+                    <strong>Илья Волков</strong>
+                    <button class="logout-btn" onclick="handleLogout()">Выйти ↩</button>
+                </div>
+            </header>
+            <div class="analytics-strip">
+                <div class="analytic-card">
+                    <div class="analytic-title">Активные аренды</div>
+                    <div class="analytic-value" id="m-stat-active">0</div>
+                </div>
+                <div class="analytic-card">
+                    <div class="analytic-title">Текущие бронирования</div>
+                    <div class="analytic-value" id="m-stat-booked">0</div>
+                </div>
+                <div class="analytic-card">
+                    <div class="analytic-title">Просроченные аренды</div>
+                    <div class="analytic-value" id="m-stat-overdue" style="color: #b91c1c;">0</div>
+                </div>
+                <div class="analytic-card">
+                    <div class="analytic-title">Ближайшие возвраты</div>
+                    <div class="analytic-value" id="m-stat-returns">0</div>
+                </div>
+            </div>
+            <div class="alert-banner">
+                ⚠️ <span>Вся информация о бронированиях клиентов синхронизируется с центральной базой данных в режиме реального времени.</span>
+            </div>
+            <div class="filters-container">
+                <div class="category-tags">
+                    <button class="tag-btn active" id="btn-filter-active" onclick="filterManagerRentals('all')">Все записи</button>
+                    <button class="tag-btn" id="btn-filter-booked" onclick="filterManagerRentals('Забронировано')">Бронирования</button>
+                    <button class="tag-btn" id="btn-filter-rent" onclick="filterManagerRentals('В аренде')">В аренде</button>
+                </div>
+                <div>
+                    <button class="tag-btn" onclick="loadManagerRentals()" style="background: #000; color: #fff;">🔄 Обновить данные</button>
+                </div>
+            </div>
+            <div class="data-table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Аренда</th>
+                                <th>Клиент / Телефон</th>
+                                <th>Инвентарь</th>
+                                <th>Период / Стоимость</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manager-rentals-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

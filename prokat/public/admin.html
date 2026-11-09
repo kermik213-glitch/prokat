@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПРОКАТ — Администратор: Склад и штрафы</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .admin-stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        .admin-stat-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .admin-stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 32px 0 16px 0;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .modal-form-inline {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 120px;
+            gap: 12px;
+            align-items: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo">⚡ПРОКАТ<span>.</span></div>
+            </div>
+            <div class="nav-group-title">Администрирование</div>
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#">📦 Склад и штрафы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manager.html">💼 Окно менеджера</a>
+                </li>
+                <li class="nav-item">
+                    <a href="client.html" target="_blank">👤Окно клиента</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Уровень: <strong>Администратор</strong></p>
+                <p>Пункт контроля: <strong>Все точки</strong></p>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="header-panel">
+                <div class="page-breadcrumbs">Администрирование / Склад и штрафы</div>
+                <div class="user-profile-zone">
+                    <div class="role-badge" style="background: #fef2f2; color: #991b1b;">Администратор ⚙️</div>
+                    <strong>Мария Орлова</strong>
+                    <button class="logout-btn" onclick="handleLogout()">Выйти ↩</button>
+                </div>
+            </header>
+            <div class="admin-summary-strip">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-title">Всего единиц</div>
+                    <div class="admin-stat-value" id="a-stat-total">0</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-title">Готовы к выдаче</div>
+                    <div class="admin-stat-value" id="a-stat-ready">0</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-title">На обслуживании</div>
+                    <div class="admin-stat-value" id="a-stat-repair">0</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-title">Неоплаченные штрафы</div>
+                    <div class="admin-stat-value" id="a-stat-fines" style="color: #b91c1c;">0 ₽</div>
+                </div>
+            </div>
+            <div class="section-header">
+                <div class="section-title">📦 Добавить инвентарь на склад</div>
+            </div>
+            <div class="modal-form-inline">
+                <div class="form-field">
+                    <label>Инв. номер (например, BE-102)</label>
+                    <input type="text" id="add-inv-number" placeholder="BE-102">
+                </div>
+                <div class="form-field">
+                    <label>Модель оборудования</label>
+                    <select id="add-inv-product-id">
+                        <option value="prod_bike7">Городской Стрит 7 (Велосипед)</option>
+                        <option value="prod_bmx">BMX Extreme Pro (Велосипед)</option>
+                        <option value="prod_mountain">Горный Трек Эксперт (Велосипед)</option>
+                        <option value="prod_road">Шоссейный Скорость (Велосипед)</option>
+                        <option value="prod_scoot1">Электро С1 Эйр (Самокат)</option>
+                        <option value="prod_kick">Детский Kick Макс (Самокат)</option>
+                        <option value="prod_pro_scoot">Трюковой Tech Team (Самокат)</option>
+                        <option value="prod_ebike_e">Городской Э-Байк (Электровелосипед)</option>
+                        <option value="prod_fat_bike">Электро Фэтбайк 4х4 (Электровелосипед)</option>
+                        <option value="prod_cruiser">Лонгборд Круизер (Другое)</option>
+                        <option value="prod_board2">Скейтборд Юнион Pro (Другое)</option>
+                        <option value="prod_roller">Роликовые коньки К2 (Другое)</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Пункт размещения</label>
+                    <select id="add-inv-location-id">
+                        <option value="1">Парк Горького</option>
+                        <option value="2">ВДНХ</option>
+                        <option value="3">Сокольники</option>
+                        <option value="4">Парк Фили</option>
+                        <option value="5">Лужники</option>
+                        <option value="6">Царицыно</option>
+                    </select>
+                </div>
+                <button class="tag-btn" onclick="submitAddInventory()" style="background: #000; color: #fff; height: 40px; border-radius: 8px;">Добавить</button>
+            </div>
+            <div class="section-header">
+                <div class="section-title">Инвентарь на складе</div>
+                <button class="tag-btn" onclick="loadAdminInventory()">🔄 Обновить склад</button>
+            </div>
+            <div class="data-table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Инв. номер</th>
+                                <th>Модель / Категория</th>
+                                <th>Состояние</th>
+                                <th>Текущий статус</th>
+                                <th>Размещение / Аренда</th>
+                                <th>Последняя проверка</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-inventory-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-header">
+                <div class="section-title">⚠️ Начислить новый штраф</div>
+            </div>
+            <div class="modal-form-inline">
+                <div class="form-field">
+                    <label>ID Аренды (например, A-1042)</label>
+                    <input type="text" id="fine-rental-id" placeholder="A-1042">
+                </div>
+                <div class="form-field">
+                    <label>ФИО Клиента</label>
+                    <input type="text" id="fine-client-name" placeholder="Павел Козлов">
+                </div>
+                <div class="form-field">
+                    <label>Основание штрафа</label>
+                    <input type="text" id="fine-reason" placeholder="Повреждение тормоза">
+                </div>
+                <div class="form-field">
+                    <label>Сумма (₽)</label>
+                    <input type="number" id="fine-amount" placeholder="1500">
+                </div>
+                <button class="tag-btn" onclick="submitCreateFine()" style="background: #b91c1c; color: #fff; height: 40px; border-radius: 8px;">Выписать</button>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">Штрафы и начисления</div>
+                <button class="tag-btn" onclick="loadAdminFines()">🔄 Обновить штрафы</button>
+            </div>
+            <div class="data-table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Номер штрафа</th>
+                                <th>ID Аренды</th>
+                                <th>Клиент</th>
+                                <th>Основание</th>
+                                <th>Сумма</th>
+                                <th>Статус оплаты</th>
+                                <th>Дата начисления</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-fines-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
